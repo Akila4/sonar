@@ -1,0 +1,68 @@
+2022.02.17 11:38:49 INFO  web[][o.s.p.ProcessEntryPoint] Starting web
+2022.02.17 11:38:50 INFO  web[][o.a.t.u.n.NioSelectorPool] Using a shared selector for servlet write/read
+2022.02.17 11:38:51 INFO  web[][o.e.p.PluginsService] no modules loaded
+2022.02.17 11:38:51 INFO  web[][o.e.p.PluginsService] loaded plugin [org.elasticsearch.join.ParentJoinPlugin]
+2022.02.17 11:38:51 INFO  web[][o.e.p.PluginsService] loaded plugin [org.elasticsearch.percolator.PercolatorPlugin]
+2022.02.17 11:38:51 INFO  web[][o.e.p.PluginsService] loaded plugin [org.elasticsearch.transport.Netty4Plugin]
+2022.02.17 11:38:53 INFO  web[][o.s.s.e.EsClientProvider] Connected to local Elasticsearch: [127.0.0.1:9001]
+2022.02.17 11:38:53 INFO  web[][o.s.s.p.LogServerVersion] SonarQube Server / 7.6.0.21501 / d56689a5eb122c06cf87375828085609f5a68323
+2022.02.17 11:38:53 INFO  web[][o.sonar.db.Database] Create JDBC data source for jdbc:postgresql://localhost/sonar
+2022.02.17 11:38:53 ERROR web[][o.s.s.p.Platform] Web server startup failed
+java.lang.IllegalStateException: Can not connect to database. Please check connectivity and settings (see the properties prefixed by 'sonar.jdbc.').
+	at org.sonar.db.DefaultDatabase.checkConnection(DefaultDatabase.java:119)
+	at org.sonar.db.DefaultDatabase.start(DefaultDatabase.java:85)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.picocontainer.lifecycle.ReflectionLifecycleStrategy.invokeMethod(ReflectionLifecycleStrategy.java:110)
+	at org.picocontainer.lifecycle.ReflectionLifecycleStrategy.start(ReflectionLifecycleStrategy.java:89)
+	at org.picocontainer.injectors.AbstractInjectionFactory$LifecycleAdapter.start(AbstractInjectionFactory.java:84)
+	at org.picocontainer.behaviors.AbstractBehavior.start(AbstractBehavior.java:169)
+	at org.picocontainer.behaviors.Stored$RealComponentLifecycle.start(Stored.java:132)
+	at org.picocontainer.behaviors.Stored.start(Stored.java:110)
+	at org.picocontainer.DefaultPicoContainer.potentiallyStartAdapter(DefaultPicoContainer.java:1016)
+	at org.picocontainer.DefaultPicoContainer.startAdapters(DefaultPicoContainer.java:1009)
+	at org.picocontainer.DefaultPicoContainer.start(DefaultPicoContainer.java:767)
+	at org.sonar.core.platform.ComponentContainer.startComponents(ComponentContainer.java:135)
+	at org.sonar.server.platform.platformlevel.PlatformLevel.start(PlatformLevel.java:90)
+	at org.sonar.server.platform.platformlevel.PlatformLevel1.start(PlatformLevel1.java:154)
+	at org.sonar.server.platform.Platform.start(Platform.java:211)
+	at org.sonar.server.platform.Platform.startLevel1Container(Platform.java:170)
+	at org.sonar.server.platform.Platform.init(Platform.java:86)
+	at org.sonar.server.platform.web.PlatformServletContextListener.contextInitialized(PlatformServletContextListener.java:45)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4745)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5207)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1419)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1409)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.sql.SQLException: Cannot create PoolableConnectionFactory (FATAL: Ident authentication failed for user "sonar")
+	at org.apache.commons.dbcp2.BasicDataSource.createPoolableConnectionFactory(BasicDataSource.java:2385)
+	at org.apache.commons.dbcp2.BasicDataSource.createDataSource(BasicDataSource.java:2110)
+	at org.apache.commons.dbcp2.BasicDataSource.getConnection(BasicDataSource.java:1563)
+	at org.sonar.db.profiling.NullConnectionInterceptor.getConnection(NullConnectionInterceptor.java:31)
+	at org.sonar.db.profiling.ProfiledDataSource.getConnection(ProfiledDataSource.java:317)
+	at org.sonar.db.DefaultDatabase.checkConnection(DefaultDatabase.java:116)
+	... 30 common frames omitted
+Caused by: org.postgresql.util.PSQLException: FATAL: Ident authentication failed for user "sonar"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:514)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:141)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:192)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:49)
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:195)
+	at org.postgresql.Driver.makeConnection(Driver.java:454)
+	at org.postgresql.Driver.connect(Driver.java:256)
+	at org.apache.commons.dbcp2.DriverConnectionFactory.createConnection(DriverConnectionFactory.java:53)
+	at org.apache.commons.dbcp2.PoolableConnectionFactory.makeObject(PoolableConnectionFactory.java:291)
+	at org.apache.commons.dbcp2.BasicDataSource.validateConnectionFactory(BasicDataSource.java:2395)
+	at org.apache.commons.dbcp2.BasicDataSource.createPoolableConnectionFactory(BasicDataSource.java:2381)
+	... 35 common frames omitted
+	Suppressed: org.postgresql.util.PSQLException: FATAL: Ident authentication failed for user "sonar"
+		at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:514)
+		at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:141)
+		at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:201)
+		... 43 common frames omitted
